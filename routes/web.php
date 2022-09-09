@@ -17,6 +17,16 @@ use App\Http\Controllers\PostController;
 |
 */
 
+Route::group([
+  'prefix' => 'auth',
+  'as' => 'auth.'
+], function() {
+  Route::get('login', [DashboardController::class, 'loginView'])->name('login');
+  Route::post('login', [DashboardController::class, 'login']);
+  Route::get('register', [DashboardController::class, 'registerView'])->name('register');
+  Route::post('register', [DashboardController::class, 'register']);
+});
+
 Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
 Route::group([
     'prefix' => 'categories',
@@ -27,5 +37,23 @@ Route::group([
     Route::put('{id}', [CategoryController::class, 'update'])->name('update');
     Route::delete('{id}', [CategoryController::class, 'delete'])->name('delete');
 });
-Route::get('/tag', [TagController::class, 'index'])->name('tag');
-Route::get('/post', [PostController::class, 'index'])->name('dashboard');
+
+Route::group([
+  'prefix' => 'tag',
+  'as' => 'tags.',
+], function() {
+  Route::get('', [TagController::class, 'index'])->name('index');
+  Route::post('', [TagController::class, 'add'])->name('add');
+  Route::put('{id}', [TagController::class, 'update'])->name('update');
+  Route::delete('{id}', [TagController::class, 'delete'])->name('delete');
+});
+
+Route::group([
+  'prefix' => 'post',
+  'as' => 'post.',
+], function() {
+  Route::get('', [PostController::class, 'index'])->name('index');
+  Route::post('', [PostController::class, 'add'])->name('add');
+  Route::put('{id}', [PostController::class, 'update'])->name('update');
+  Route::delete('{id}', [PostController::class, 'delete'])->name('delete');
+});
